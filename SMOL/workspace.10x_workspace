@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<N10X>
+	<Workspace>
+		<FileTypes>All Code Files</FileTypes>
+		<ExcludeFilters></ExcludeFilters>
+		<SyncFiles>true</SyncFiles>
+		<Recursive>true</Recursive>
+		<IsVirtual>false</IsVirtual>
+		<IsFolder>false</IsFolder>
+		<BuildCommand>make</BuildCommand>
+		<RebuildCommand>make rebuild</RebuildCommand>
+		<BuildFileCommand></BuildFileCommand>
+		<CleanCommand>make clean</CleanCommand>
+		<RunCommand>C:\pspsdk\_ppsspp\PPSSPPWindows64.exe &amp;quot;$(WorkspaceDirectory)/EBOOT.PBP&amp;quot;</RunCommand>
+		<DebugCommand></DebugCommand>
+		<ExePathCommand></ExePathCommand>
+		<Configurations>
+			<Configuration>Debug</Configuration>
+			<Configuration>Release</Configuration>
+		</Configurations>
+		<Platforms>
+			<Platform>x64</Platform>
+			<Platform>Win32</Platform>
+		</Platforms>
+		<AdditionalIncludePaths>
+			<AdditionalIncludePath>C:\pspsdk\psp\sdk\include</AdditionalIncludePath>
+			<AdditionalIncludePath>$(WorkspaceDirectory)</AdditionalIncludePath>
+		</AdditionalIncludePaths>
+		<Children></Children>
+	</Workspace>
+</N10X>
