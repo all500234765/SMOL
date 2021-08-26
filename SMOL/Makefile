@@ -8,11 +8,20 @@ PSP_FW_VERSION = 371
 
 PCH_SRC = pc.h
 INCDIR =
-CFLAGS = -gdwarf-2 -O2 -G0 -MP -MMD -D__PSP__
+CFLAGS = -O2 -G0 -MP -MMD -D__PSP__
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
 ASFLAGS = $(CFLAGS)
 
-OBJS := $(filter-out $(patsubst %.h,%.cpp,$(PCH_SRC)),$(OBJS))
+
+CFLAGS += -gdwarf-2
+
+
+NEW_OBJS := $(filter-out $(patsubst %.h,%.cpp,$(PCH_SRC)),$(OBJS))
+SOURCES  := $(NEW_OBJS)
+
+OBJS     := $(NEW_OBJS:%.cpp=%.o)
+#NEW_OBJS = $(OBJS:%.c=%.o)
+#OBJS     = $(NEW_OBJS)
 
 #-lstdc++ -lpng -lz \
 #         -lpsphprm -lpspsdk -lpspctrl -lpspumd -lpsprtc -lpsppower -lpspgu -lpspgum  -lpspaudiolib -lpspaudio -lpsphttp -lpspssl -lpspwlan \
@@ -30,17 +39,11 @@ LDFLAGS =
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = SMOL
 
-# SRC = $(wildcard *.cpp)
-#-include $(OBJS:.cpp=.o)
-
-$(info Sources: $(OBJS))
+$(info Sources: $(SOURCES))
+$(info Objs: $(OBJS))
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include build.mak
 
-
-#CC = psp-gcc
-#
-#all: $(OBJS)
-#%.o: %.mm
-#	$(CC) -H $(CFLAGS) -c main.cpp -o main.o
+#OBJS += $(PSPSDK)/lib.o
+#$(info MOAR AWWAWAWAWWAWAWWAAWAW=$(filter $(PSPSDK)%,$(OBJS)) $(addprefix $(OBJDIR)/,$(filter-out $(PSPSDK)%,$(OBJS))))

@@ -204,7 +204,8 @@ $(OBJDIR)/$(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
 	$(LINK.c) $^ $(CFLAGS_EXTRA) $(LIBS) -o $@
 else
 $(OBJDIR)/$(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
-	$(LINK.c) $^ $(CFLAGS_EXTRA) $(LIBS) -o $@
+	# $(info MOAR AWWAWAWAWWAWAWWAAWAW=$(filter-out $(PSPSDK)%,$^))
+	$(LINK.c) $(filter $(PSPSDK)%,$^) $(addprefix $(OBJDIR)/,$(filter-out $(PSPSDK)%,$^)) $(CFLAGS_EXTRA) $(LIBS) -o $@
 	$(FIXUP) $@
 endif
 
@@ -244,9 +245,10 @@ $(BUILD)/%.prx: $(OBJDIR)/%.elf
 #%.o: %.mm
 #	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $@ $(OBJDIR)/$<
 
-%.cpp: %.d
-	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $@ $(OBJDIR)/$<
-	$(GDC) $(DFLAGS) -c $(OBJDIR)/$< -o $(OBJDIR)/$<.d
+%.o: $(SOURCES)
+	mkdir -p $(dir $(OBJDIR)/$@)
+	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $(OBJDIR)/$@ $<
+	# $(GDC) $(DFLAGS) -c $< -o $<.d
 
 %.o: %.d
 	$(GDC) $(DFLAGS) -c $@ -o $(OBJDIR)/$<
@@ -259,6 +261,6 @@ $(BUILD)/%.prx: $(OBJDIR)/%.elf
 #-IC:/pspsdk_15/psp/include/c++/8.2.0/psp/ -IC:/pspsdk_15/psp/include/c++/8.2.0/ 
 
 clean: 
-	-rm -f $(FINAL_TARGET) $(EXTRA_CLEAN)  $(filter-out %.c,$(filter-out %.cpp,$(OBJDIR)/$(OBJS))) $(BUILD)/$(PSP_EBOOT_SFO) $(BUILD)/$(PSP_EBOOT) $(EXTRA_TARGETS) $(PCH_OUT)
+	-rm -f $(FINAL_TARGET) $(EXTRA_CLEAN) $(filter-out %.c,$(filter-out %.cpp,$(OBJDIR)/$(OBJS))) $(BUILD)/$(PSP_EBOOT_SFO) $(BUILD)/$(PSP_EBOOT) $(EXTRA_TARGETS) $(PCH_OUT)
 
 rebuild: clean all
