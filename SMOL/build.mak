@@ -259,6 +259,6 @@ $(BUILD)/%.prx: $(OBJDIR)/%.elf
 #-IC:/pspsdk_15/psp/include/c++/8.2.0/psp/ -IC:/pspsdk_15/psp/include/c++/8.2.0/ 
 
 clean: 
-	-rm -f $(FINAL_TARGET) $(EXTRA_CLEAN) $(OBJDIR)/$(OBJS) $(BUILD)/$(PSP_EBOOT_SFO) $(BUILD)/$(PSP_EBOOT) $(EXTRA_TARGETS) $(PCH_OUT)
+	-rm -f $(FINAL_TARGET) $(EXTRA_CLEAN)  $(filter-out %.c,$(filter-out %.cpp,$(OBJDIR)/$(OBJS))) $(BUILD)/$(PSP_EBOOT_SFO) $(BUILD)/$(PSP_EBOOT) $(EXTRA_TARGETS) $(PCH_OUT)
 
 rebuild: clean all
