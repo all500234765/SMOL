@@ -10,6 +10,7 @@
 #include "Platform/Filesystem.h"
 #include "Platform/Pipeline.h"
 #include "Misc/Utils.h"
+#include "Misc/Log.h"
 
 #include <chrono>
 
@@ -50,6 +51,8 @@ static bool running = true;
 #endif
 
 void EngineInit(int argc, char** argv) {
+    Log::Init();
+
     Filesystem::Init();
     Streaming::Init();
     Window::Init();
@@ -66,7 +69,7 @@ void EngineRun(Game* game) {
     auto time_point_next = time_point_current;
 
 #if SMOL_OS == SMOL_OS_PSP
-    pspDebugScreenInit();
+    //pspDebugScreenInit();
 
     sceCtrlSetSamplingCycle(0);
     sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
@@ -98,9 +101,10 @@ void EngineRun(Game* game) {
 
         time_point_next    = clock.now();
         time_point_current = time_point_next;
-        f32 delta_time     = ToF32((time_point_next - time_point_current).count());
+        f32 delta_time     = ToF32(std::chrono::duration_cast<std::chrono::milliseconds>(time_point_next - time_point_current).count());
 
         Input::UpdateC();
+
         game->Step(delta_time);
 
         Pipeline::Present();

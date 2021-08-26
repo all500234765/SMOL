@@ -1,6 +1,7 @@
 TARGET = smol_test
 OBJS = $(wildcard *.cpp) $(wildcard */*.cpp)
 OBJDIR = ./Junk
+BUILD = ./Build
 
 BUILD_PRX = 1
 PSP_FW_VERSION = 371
@@ -10,6 +11,8 @@ INCDIR =
 CFLAGS = -gdwarf-2 -O2 -G0 -MP -MMD -D__PSP__
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
 ASFLAGS = $(CFLAGS)
+
+OBJS := $(filter-out $(patsubst %.h,%.cpp,$(PCH_SRC)),$(OBJS))
 
 #-lstdc++ -lpng -lz \
 #         -lpsphprm -lpspsdk -lpspctrl -lpspumd -lpsprtc -lpsppower -lpspgu -lpspgum  -lpspaudiolib -lpspaudio -lpsphttp -lpspssl -lpspwlan \
@@ -34,3 +37,10 @@ $(info Sources: $(OBJS))
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
+
+
+#CC = psp-gcc
+#
+#all: $(OBJS)
+#%.o: %.mm
+#	$(CC) -H $(CFLAGS) -c main.cpp -o main.o

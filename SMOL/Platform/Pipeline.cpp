@@ -129,8 +129,8 @@ void Pipeline::PostSubmitStates() {
 
 void Mesh::Create(VertexBuffer* v, IndexBuffer* i)
 {
-    vb = v;
-    ib = i;
+    //vb = v;
+    //ib = i;
 
     // Generate bound box
 

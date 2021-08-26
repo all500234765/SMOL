@@ -78,3 +78,10 @@ typedef std::wstring StringWView; // Because of PSP
     #define __memcpy_s
 #endif
 
+#ifndef SMOL_ALIGN
+    #if SMOL_OS == SMOL_OS_WIN
+        #define SMOL_ALIGN(X) __declspec(alignas(X))
+    #else
+        #define SMOL_ALIGN(X) __attribute__((aligned(X)))
+    #endif
+#endif

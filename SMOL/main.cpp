@@ -9,19 +9,20 @@ PSP_MODULE_INFO("smol_test", PSP_MODULE_USER, 1, 0);
 
 class MyGame final: public Game {
 private:
+    VertexBuffer vb;
     Mesh mesh;
 
 public:
     virtual void GameStart() override {
-        pspDebugScreenInit();
+        /*pspDebugScreenInit();
         pspDebugScreenClear();       // Clears screen pixels
         pspDebugScreenSetXY(0, 0);   // Reset where we draw
 
-        pspDebugScreenPrintf("Hello world!");
+        pspDebugScreenPrintf("Hello world!");*/
         
         struct V {
-            short x, y, z;
-            ColorLowNoAlpha c;
+            ColorLowNoAlpha c; // 16
+            short x, y, z;     // 48
         };
 
         V* b = new V[3];
@@ -40,15 +41,19 @@ public:
         b[2].z = 0;
         b[2].c.SetColor(SMOL_COLOR(0, 0, 255, 255));
 
-        //Buffer buff(b, 3);
-        VertexBuffer vb;
+        Buffer buff(b, 3);
         vb.Create(3, VertexFormat(VFVertex16 | VFColorLowNoAlpha), { b, 3 });
 
+        
         mesh.Create(&vb);
+        pspDebugScreenPrintf("AWAWAWA\n");
     }
 
     virtual void Step(f32 delta_time) override {
-        mesh.Draw(false);
+        //mesh.Draw(false);
+        pspDebugScreenPrintf("FPS: %f\n", delta_time);
+
+
     }
 
     virtual void GameEnd() override {

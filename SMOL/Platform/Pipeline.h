@@ -339,46 +339,14 @@ public:
     const StringView& GetDebugName() const { return debug_name; }
 };
 
-class Mesh: public BaseResource {
-private:
-    class BoundVolume* bound = nullptr;
-    class VertexBuffer* vb = nullptr;
-    class IndexBuffer* ib = nullptr;
-
-
-
-public:
-    void Create(VertexBuffer* vb, IndexBuffer* ib=nullptr);
-    void Draw(bool transform_3d=true);
-
-
-};
-
-class Texture: public BaseResource {
-private:
-    friend class Pipeline;
-
-    /// PSP: 
-    /// 0: Block-aligned size
-    /// 1: RAM Texture Data
-    /// 3: Read only flag
-    void* private_data[4]{ 0, nullptr, 0, 0 };
-    TextureQuality quality;
-    bool is_depth = false;
-    u32 flags, width, height;
-
-public:
-
-
-};
-
 class Buffer: public BaseResource {
 private:
-    void* buffer;
+    void* SMOL_ALIGN(16) buffer;
     u32 size;
 
 public:
     Buffer() {};
+    Buffer(u32 sz): buffer(new u16[sz]), size(sz) {};
     Buffer(void* buff, u32 sz): buffer(buff), size(sz) {};
     Buffer(Buffer&& buff) {
         if( this != &buff ) {
@@ -458,6 +426,39 @@ private:
 public:
     virtual u32 GetVertexNum() const { return 0; }
     virtual f32* GetVertices() { return nullptr; }
+};
+
+class Mesh: public BaseResource {
+private:
+    BoundVolume* bound = nullptr;
+    VertexBuffer* vb = nullptr;
+    IndexBuffer* ib = nullptr;
+
+
+
+public:
+    void Create(VertexBuffer* vb, IndexBuffer* ib=nullptr);
+    void Draw(bool transform_3d=true);
+
+
+};
+
+class Texture: public BaseResource {
+private:
+    friend class Pipeline;
+
+    /// PSP: 
+    /// 0: Block-aligned size
+    /// 1: RAM Texture Data
+    /// 3: Read only flag
+    void* private_data[4]{ 0, nullptr, 0, 0 };
+    TextureQuality quality;
+    bool is_depth = false;
+    u32 flags, width, height;
+
+public:
+
+
 };
 
 class BoundBox final: public BoundVolume {

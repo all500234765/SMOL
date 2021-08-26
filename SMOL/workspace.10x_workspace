@@ -11,7 +11,7 @@
 		<RebuildCommand>make rebuild</RebuildCommand>
 		<BuildFileCommand></BuildFileCommand>
 		<CleanCommand>make clean</CleanCommand>
-		<RunCommand>C:\pspsdk\_ppsspp\PPSSPPWindows64.exe &amp;quot;$(WorkspaceDirectory)/EBOOT.PBP&amp;quot;</RunCommand>
+		<RunCommand>C:\pspsdk\_ppsspp\PPSSPPWindows64.exe &amp;quot;$(WorkspaceDirectory)/BUILD/EBOOT.PBP&amp;quot;</RunCommand>
 		<DebugCommand></DebugCommand>
 		<ExePathCommand></ExePathCommand>
 		<Configurations>
