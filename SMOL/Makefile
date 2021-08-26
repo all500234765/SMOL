@@ -36,7 +36,7 @@ PSP_EBOOT_TITLE = SMOL
 $(info Sources: $(OBJS))
 
 PSPSDK=$(shell psp-config --pspsdk-path)
-include $(PSPSDK)/lib/build.mak
+include build.mak
 
 
 #CC = psp-gcc
