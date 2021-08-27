@@ -243,7 +243,17 @@ void VertexBuffer::Create(u32 vcount, VertexFormat fmt, Buffer&& src, u32 format
     vertex_count = vcount;
     format_length = format_len;
     buffer = std::move(src);
+     
+    update_format_psp();
+}
 
+void VertexBuffer::Create(u32 vcount, VertexFormat fmt, const Buffer& src, u32 format_len)
+{
+    format = fmt;
+    vertex_count = vcount;
+    format_length = format_len;
+    buffer = src;
+    
     update_format_psp();
 }
 
@@ -256,7 +266,7 @@ void Mesh::Draw(bool transform_3d) {
     u32 format = vb->GetFormatPSP() | (transform_3d ? GU_TRANSFORM_3D : GU_TRANSFORM_2D);
     if( bound && bound->GetVertexNum() ) sceGuBeginObject(GU_VERTEX_32BITF, bound->GetVertexNum(), nullptr, bound->GetVertices());
     {
-        if (ib) {
+        if( ib ) {
             format |= ib->IsHightQuality() ? GU_INDEX_16BIT : GU_INDEX_8BIT;
             sceGuDrawArray(topology, format, vb->GetVertexCount(), ib->GetBuffer(), vb->GetBuffer());
         } else {

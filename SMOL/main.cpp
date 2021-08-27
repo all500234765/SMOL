@@ -9,6 +9,7 @@ PSP_MODULE_INFO("smol_test", PSP_MODULE_USER, 1, 0);
 
 class MyGame final: public Game {
 private:
+    Buffer buff;
     VertexBuffer vb;
     Mesh mesh;
 
@@ -25,7 +26,7 @@ public:
             short x, y, z;     // 48
         };
 
-        V* b = new V[3];
+        V* SMOL_ALIGN(16) b = new V[3];
         b[0].x = 0;
         b[0].y = 0;
         b[0].z = 0;
@@ -41,12 +42,13 @@ public:
         b[2].z = 0;
         b[2].c.SetColor(SMOL_COLOR(0, 0, 255, 255));
 
-        Buffer buff(b, 3);
-        vb.Create(3, VertexFormat(VFVertex16 | VFColorLowNoAlpha), { b, 3 });
+        buff = Buffer(b, 3);
+        vb.Create(3, VertexFormat(VFVertex16 | VFColorLowNoAlpha), buff);
 
         
+        pspDebugScreenPrintf("AWAWAWA???\n");
         mesh.Create(&vb);
-        pspDebugScreenPrintf("AWAWAWA\n");
+        pspDebugScreenPrintf("AWAWAWA!!!\n");
     }
 
     virtual void Step(f32 delta_time) override {

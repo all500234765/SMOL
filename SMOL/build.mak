@@ -205,7 +205,9 @@ $(OBJDIR)/$(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
 else
 $(OBJDIR)/$(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
 	# $(info MOAR AWWAWAWAWWAWAWWAAWAW=$(filter-out $(PSPSDK)%,$^))
-	$(LINK.c) $(filter $(PSPSDK)%,$^) $(addprefix $(OBJDIR)/,$(filter-out $(PSPSDK)%,$^)) $(CFLAGS_EXTRA) $(LIBS) -o $@
+	# $(LINK.c) $(addprefix $(OBJDIR)/,$(filter-out $(PSPSDK)%,$^)) $(filter $(PSPSDK)%,$^) $(CFLAGS_EXTRA) $(LIBS) -o $@
+	$(LINK.c) $^ $(CFLAGS_EXTRA) $(LIBS) -o $@
+	#$(LINK.c) $(addprefix $(OBJDIR)/,$(filter-out $(PSPSDK)%,$^)) $(filter $(PSPSDK)%,$^) $(CFLAGS_EXTRA) $(LIBS) -o $@
 	$(FIXUP) $@
 endif
 
@@ -245,13 +247,19 @@ $(BUILD)/%.prx: $(OBJDIR)/%.elf
 #%.o: %.mm
 #	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $@ $(OBJDIR)/$<
 
-%.o: $(SOURCES)
-	mkdir -p $(dir $(OBJDIR)/$@)
-	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $(OBJDIR)/$@ $<
-	# $(GDC) $(DFLAGS) -c $< -o $<.d
+#%.o: $(SOURCES)
+#	@mkdir -p $(dir $(OBJDIR)/$@)
+#	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $(OBJDIR)/$@ $<
+#	# $(GDC) $(DFLAGS) -c -o $(OBJDIR)/$@ $(OBJDIR)/$@.d
 
 %.o: %.d
-	$(GDC) $(DFLAGS) -c $@ -o $(OBJDIR)/$<
+	$(GDC) $(DFLAGS) -c -o $(OBJDIR)/$@ $(OBJDIR)/$<
+
+#%.d : $(SOURCES)
+#	@mkdir -p $(dir $(OBJDIR)/$@)
+##	$(CXX) $(CXXFLAGS_EXTRA) $(CXXFLAGS) -c -o $(OBJDIR)/$@ $<
+#	$(CXX) -M $(CXXFLAGS_EXTRA) $(CXXFLAGS) $(OBJDIR)/$< > $@
+#include $(OBJS:%.o=%.d)
 
 %.cpp.gch:
 	$(CXX) -x c++-header $(CXXFLAGS) -c $(patsubst %.gch,%,$@) -o $@

@@ -6,7 +6,7 @@ BUILD = ./Build
 BUILD_PRX = 1
 PSP_FW_VERSION = 371
 
-PCH_SRC = pc.h
+#PCH_SRC = pc.h
 INCDIR =
 CFLAGS = -O2 -G0 -MP -MMD -D__PSP__
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++11
@@ -19,9 +19,9 @@ CFLAGS += -gdwarf-2
 NEW_OBJS := $(filter-out $(patsubst %.h,%.cpp,$(PCH_SRC)),$(OBJS))
 SOURCES  := $(NEW_OBJS)
 
-OBJS     := $(NEW_OBJS:%.cpp=%.o)
+#OBJS     := $(NEW_OBJS:%.cpp=%.o)
 #NEW_OBJS = $(OBJS:%.c=%.o)
-#OBJS     = $(NEW_OBJS)
+OBJS     = $(NEW_OBJS)
 
 #-lstdc++ -lpng -lz \
 #         -lpsphprm -lpspsdk -lpspctrl -lpspumd -lpsprtc -lpsppower -lpspgu -lpspgum  -lpspaudiolib -lpspaudio -lpsphttp -lpspssl -lpspwlan \

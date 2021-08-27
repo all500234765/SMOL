@@ -339,13 +339,14 @@ public:
     const StringView& GetDebugName() const { return debug_name; }
 };
 
-class Buffer: public BaseResource {
+/*class Buffer: public BaseResource {
 private:
     void* SMOL_ALIGN(16) buffer;
     u32 size;
 
 public:
     Buffer() {};
+    Buffer(const Buffer& buff): buffer(buff.buffer), size(buff.size) {};
     Buffer(u32 sz): buffer(new u16[sz]), size(sz) {};
     Buffer(void* buff, u32 sz): buffer(buff), size(sz) {};
     Buffer(Buffer&& buff) {
@@ -367,11 +368,32 @@ public:
             buff.size = 0;
         }
     }
+
+    Buffer& operator=(const Buffer& buff) {
+        buffer = buff.buffer;
+        size = buff.size;
+    }
     
     void SetBuffer(void* buff, u32 sz) { buffer = buff; size = sz; }
     
     void* GetBuffer() const { return buffer; }
     u32 GetSize() const { return size; }
+};*/
+
+class DataAlignedPool {
+protected:
+    static void* SMOL_ALIGN(SMOL_DATA_ALIGNMENT) aligned_data_block[SMOL_DATA_SIZE];
+
+private:
+    void* operator new(size_t);
+    void* operator new[](size_t);
+    void* operator new(size_t, const std::nothrow_t& tag);
+    void* operator new[](size_t, const std::nothrow_t& tag);
+    void* operator new(size_t, void*);
+
+public:
+
+
 };
 
 class VertexBuffer: public BaseResource {
@@ -390,6 +412,7 @@ private:
 
 public:
     void Create(u32 vcount, VertexFormat format, Buffer&& src, u32 format_len=1);
+    void Create(u32 vcount, VertexFormat format, const Buffer& src, u32 format_len=1);
     void Release();
 
     void Bind();
