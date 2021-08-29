@@ -135,3 +135,26 @@ void Mesh::Create(VertexBuffer* v, IndexBuffer* i)
     // Generate bound box
 
 }
+
+namespace
+{
+
+static void* SMOL_ALIGN(SMOL_DATA_ALIGNMENT) aligned_data_block[SMOL_DATA_SIZE] = {};
+
+} // namespace
+
+void* DataAlignedPool::operator new(size_t size) {
+    return ::operator new(aligned_data_block) char[size];
+}
+
+void* DataAlignedPool::operator new[](size_t size) {
+    return ::operator new(aligned_data_block) char[size];
+}
+
+void* DataAlignedPool::operator new(size_t, const std::nothrow_t& tag) {
+    return ::operator new(aligned_data_block) char[size];
+}
+
+void* DataAlignedPool::operator new[](size_t, const std::nothrow_t& tag) {
+    return ::operator new(aligned_data_block) char[size];
+}

@@ -330,7 +330,20 @@ struct RenderState
     Property<GPUTopology> topology;
 };
 
-class BaseResource {
+class DataAlignedPool {
+public:
+    void* operator new(size_t);
+    void* operator new[](size_t);
+    void* operator new(size_t, const std::nothrow_t& tag);
+    void* operator new[](size_t, const std::nothrow_t& tag);
+    //void* operator new(size_t, void*);
+
+public:
+    
+
+};
+
+class BaseResource: public DataAlignedPool {
 protected:
     String debug_name = "unnamed";
 
@@ -379,22 +392,6 @@ public:
     void* GetBuffer() const { return buffer; }
     u32 GetSize() const { return size; }
 };*/
-
-class DataAlignedPool {
-protected:
-    static void* SMOL_ALIGN(SMOL_DATA_ALIGNMENT) aligned_data_block[SMOL_DATA_SIZE];
-
-private:
-    void* operator new(size_t);
-    void* operator new[](size_t);
-    void* operator new(size_t, const std::nothrow_t& tag);
-    void* operator new[](size_t, const std::nothrow_t& tag);
-    void* operator new(size_t, void*);
-
-public:
-
-
-};
 
 class VertexBuffer: public BaseResource {
 private:
