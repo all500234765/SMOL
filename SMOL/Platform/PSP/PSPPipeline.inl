@@ -237,22 +237,12 @@ void VertexBuffer::update_format_psp()
         Log::Warning("Vertex buffer %s is unaligned!", debug_name.data());
 }
 
-void VertexBuffer::Create(u32 vcount, VertexFormat fmt, Buffer&& src, u32 format_len)
+void VertexBuffer::Create(u32 vcount, VertexFormat fmt, const Data& src, u32 format_len)
 {
     format = fmt;
     vertex_count = vcount;
     format_length = format_len;
-    buffer = std::move(src);
-     
-    update_format_psp();
-}
-
-void VertexBuffer::Create(u32 vcount, VertexFormat fmt, const Buffer& src, u32 format_len)
-{
-    format = fmt;
-    vertex_count = vcount;
-    format_length = format_len;
-    buffer = src;
+    data = src;
     
     update_format_psp();
 }
@@ -268,9 +258,9 @@ void Mesh::Draw(bool transform_3d) {
     {
         if( ib ) {
             format |= ib->IsHightQuality() ? GU_INDEX_16BIT : GU_INDEX_8BIT;
-            sceGuDrawArray(topology, format, vb->GetVertexCount(), ib->GetBuffer(), vb->GetBuffer());
+            sceGuDrawArray(topology, format, vb->GetVertexCount(), ib->GetData(), vb->GetData());
         } else {
-            sceGuDrawArray(topology, format, vb->GetVertexCount(), nullptr, vb->GetBuffer());
+            sceGuDrawArray(topology, format, vb->GetVertexCount(), nullptr, vb->GetData());
         }
     }
     if( bound && bound->GetVertexNum() ) sceGuEndObject();

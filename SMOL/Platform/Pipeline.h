@@ -352,46 +352,11 @@ public:
     const StringView& GetDebugName() const { return debug_name; }
 };
 
-/*class Buffer: public BaseResource {
-private:
-    void* SMOL_ALIGN(16) buffer;
-    u32 size;
-
-public:
-    Buffer() {};
-    Buffer(const Buffer& buff): buffer(buff.buffer), size(buff.size) {};
-    Buffer(u32 sz): buffer(new u16[sz]), size(sz) {};
-    Buffer(void* buff, u32 sz): buffer(buff), size(sz) {};
-    Buffer(Buffer&& buff) {
-        if( this != &buff ) {
-            buffer = buff.buffer;
-            size = buff.size;
-            
-            buff.buffer = nullptr;
-            buff.size = 0;
-        }
-    }
-
-    Buffer& operator=(Buffer&& buff) {
-        if( this != &buff ) {
-            buffer = buff.buffer;
-            size = buff.size;
-            
-            buff.buffer = nullptr;
-            buff.size = 0;
-        }
-    }
-
-    Buffer& operator=(const Buffer& buff) {
-        buffer = buff.buffer;
-        size = buff.size;
-    }
-    
-    void SetBuffer(void* buff, u32 sz) { buffer = buff; size = sz; }
-    
-    void* GetBuffer() const { return buffer; }
-    u32 GetSize() const { return size; }
-};*/
+struct Data
+{
+    void* ptr;
+    size_t size;
+};
 
 class VertexBuffer: public BaseResource {
 private:
@@ -403,13 +368,12 @@ private:
     u32 vertex_count = 0;
     u64 format_psp = 0;
     u32 stride = 0;
-    Buffer buffer;
+    Data data;
 
     void update_format_psp();
 
 public:
-    void Create(u32 vcount, VertexFormat format, Buffer&& src, u32 format_len=1);
-    void Create(u32 vcount, VertexFormat format, const Buffer& src, u32 format_len=1);
+    void Create(u32 vcount, VertexFormat format, const Data& src, u32 format_len=1);
     void Release();
 
     void Bind();
@@ -417,7 +381,7 @@ public:
 
     u64 GetFormatPSP() const { return format_psp; }
     u32 GetVertexCount() const { return vertex_count; }
-    const void* GetBuffer() const { return buffer.GetBuffer(); }
+    const void* GetData() const { return data.ptr; }
     u32 GetStride() const { return stride; }
 
 
@@ -431,11 +395,11 @@ private:
     friend class Pipeline;
     u32 index_count = 0;
     bool highquality = false;
-    void* buffer = nullptr;
+    Data data = nullptr;
 
 public:
     u32 GetIndexCount() const { return index_count; }
-    const void* GetBuffer() const { return buffer; }
+    const void* GetData() const { return data; }
     bool IsHightQuality() const { return highquality; }
 
 };
