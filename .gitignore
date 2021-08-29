@@ -3,6 +3,21 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# PSP-specific files
+*.PBP
+*.SFO
+*.prx
+
+# C++-specific files
+*.o
+*.d
+*.elf
+
+*.recipe
+*.idb
+*.tlog
+*.tlog/*
+
 # User-specific files
 *.rsuser
 *.suo
