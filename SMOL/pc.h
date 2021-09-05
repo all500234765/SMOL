@@ -83,9 +83,17 @@ typedef std::wstring StringWView; // Because of PSP
         #define SMOL_ALIGN(X) __declspec(alignas(X))
         #define SMOL_DATA_ALIGNMENT 32
         #define SMOL_DATA_SIZE SMOL_DATA_ALIGNMENT * 1024 * 1024 * 8 * 4
+        #define SMOL_DATA_SIZE_MIN 1024 * 1024 * 8 * 4
     #else
         #define SMOL_ALIGN(X) __attribute__((aligned(X)))
         #define SMOL_DATA_ALIGNMENT 16
         #define SMOL_DATA_SIZE SMOL_DATA_ALIGNMENT * 256 * 256 * 8 * 12
+        #define SMOL_DATA_SIZE_MIN 256 * 256 * 8
     #endif
 #endif
+
+
+#define SMOL_DATA_ALIGN SMOL_ALIGN(SMOL_DATA_ALIGNMENT)
+
+typedef SMOL_DATA_ALIGN char[SMOL_DATA_SIZE] u8_data_size_aligned;
+typedef SMOL_DATA_ALIGN char[SMOL_DATA_SIZE_MIN] u8_min_data_size_aligned;

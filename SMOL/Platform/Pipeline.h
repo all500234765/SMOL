@@ -352,9 +352,8 @@ public:
     const StringView& GetDebugName() const { return debug_name; }
 };
 
-struct Data
-{
-    void* ptr;
+struct Data: public DataAlignedPool {
+    u8_min_data_size_aligned ptr;
     size_t size;
 };
 
@@ -395,11 +394,11 @@ private:
     friend class Pipeline;
     u32 index_count = 0;
     bool highquality = false;
-    Data data = nullptr;
+    Data data;
 
 public:
     u32 GetIndexCount() const { return index_count; }
-    const void* GetData() const { return data; }
+    const void* GetData() const { return data.ptr; }
     bool IsHightQuality() const { return highquality; }
 
 };

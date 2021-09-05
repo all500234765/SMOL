@@ -1,7 +1,7 @@
 TARGET = smol_test
 OBJS = $(wildcard *.cpp) $(wildcard */*.cpp)
 OBJDIR = ./Junk
-BUILD = ./Build
+BUILD = ./Build/PSP/
 
 BUILD_PRX = 1
 PSP_FW_VERSION = 371

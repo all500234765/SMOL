@@ -139,7 +139,7 @@ void Mesh::Create(VertexBuffer* v, IndexBuffer* i)
 namespace
 {
 
-static void* SMOL_ALIGN(SMOL_DATA_ALIGNMENT) aligned_data_block[SMOL_DATA_SIZE] = {};
+static aligned_u8 aligned_data_block = {};
 
 } // namespace
 
